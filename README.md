@@ -5,30 +5,92 @@ title: "Lab 4: StatisticalSloths"
 output: html_document
 ---
 Madeline Garrett, Kevin Luth, Zandy Boone, Katie Stewart
-```{r{r chunk_name, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
 
 ```{r chunk_name, include= FALSE}
 library(tidyverse)
 babies <- read_csv("https://raw.githubusercontent.com/ervance1/Sp2018-Data-Science-repo/master/babies2a.dat")
 babies <- rename(babies, bwtoz = `bwt/oz`) #renaming `bwt/oz` because the "/" sign requires special care
 babies <- na.omit(babies)
+?babies
+
 ```
 
-# Does Smoking Lead to Babies Being Born Prematurely? 
+# Does Smoking Lead to Babies Being Born Prematurely?
 * This question is interesting becuase it can help to better inform mothers about the risk that smoking can have on their unborn children, specifically if smoking can lead to a premature birth which can be extremely dangerous for children. This is important because knowing this may help to advise mothers to help avoid giving birth to children early, something that can affect the baby's well-being. 
 
+
 ```{r}
-ggplot(data = babies) + 
-  geom_bar(mapping = aes(x = Premature, fill =as.factor(number) ), position = "fill")+
-  ggtitle("Does Smoking Lead to Babies Being Born Prematurely?")+
-  xlab("Not Premature (0)                        Premature (1)")+
-  guides(fill=guide_legend(title="Cigarettes Smoked Per Day"))
-  
-  
+momSmoke <- babies %>%
+  filter(smoke == 1)
+mean(momSmoke[["Premature"]])
+
+nonSmoke <- babies %>%
+  filter(smoke == 0)
+mean(nonSmoke[["Premature"]])
+
+0.2211982-0.1527778
+# Mean difference is 0.0684204
 ```
 
+
+```{r, include = FALSE}
+perm_mean <- function(perms = 1000, values, n1)
+{
+  ## Variables ##
+  # perms: The number of permutations 
+  # values (num): 
+  # n1 (int): Size of group 1
+  ###############
+  
+  # Step 1:
+  # Create vector of zeroes of length "perms" to store
+  # permuted mean differnces
+  means <- vector(mode = "double", length = perms)
+  
+  # Loop throught number of permutations
+  for (i in c(1:perms))
+  {
+    # Step 2
+    # Shuffle them using smample
+    # Randomly separate vector "values" into disjoint 
+    # groups of size "n1" and "length(values) - n1" respectively
+    # group_one <- sample(values, n1)
+    # group_two <- sample(values, length(values)-n1)
+    sampled <- sample(values)
+    group_one <- sampled[1:n1]
+    group_two <- sampled[n1:length(values)]
+    
+    # Step 3:
+    # Compute the sample means for the two groups from
+    g1mean <- mean(group_one)
+    g2mean <- mean(group_two)
+    
+    # Step 4: 
+    # Compute the difference in sample means, store the
+    # value in the vector from step 1
+    diff <- g1mean - g2mean
+    means[i] <- diff
+  }
+  # Step 5:
+  # Return new updated vector, created in step 1
+  means
+}
+```
+
+
+```{r}
+preBabies <- babies %>%
+  filter(smoke == "1" | smoke == "0")
+mean_vals <- perm_mean(1000, babies$Premature, 240)
+mean_data <- tibble(mean_vals)
+```
+
+```{r}
+ggplot(data = mean_data) +
+  geom_histogram(mapping = aes(x = mean_vals), color = "lightblue", binwidth = .01)+ 
+   geom_vline(xintercept =0.0684204, col=c("darkblue")) +
+  ggtitle("Distribution of Mean Differences For Moms that Smoked vs Non Smokers")
+```
 
 ### Conclusion
 * This data shows that there are more babies being born prematurely when the mother smoked at least one cigarette a day. However when we ran the table of how many women smoked and babies being born prematurely we saw that only 4 more babies were born prematurely to women who smoked. This leads us to conclude that there is a minor correlation between smoking and babies being born prematurely 
@@ -36,102 +98,6 @@ ggplot(data = babies) +
 ### Recommendations
 *  Our recommendation is to tell mothers that if they smoke that there is a risk that there is a chance that their child will be born prematurely. We also think that more data must be gathered in order to more accurately answer this question. However when it comes to the life of their child, most mothers would rather noe take risks which is why we think it would be wise to advise them of the possible dangers of smoking while pregnant. We also recognize that there are confounding variables such as smoking in the past and mothers age.
 
-
-# Does Smoking Lead to Babies Being Born with Low Birth Weights?
-* This question is interesting becuase it can help to better inform mothers about the risk that smoking can have on their unborn children, specifically if smoking can lead to low birth weights which can be very troubling for new born babies. This is important because knowing this may help to advise mothers to help avoid giving birth to children with dangerously low birth weights that could affect their health. 
-
-```{r}
-ggplot(data = babies) + 
-  geom_smooth(mapping = aes(x=gestation, y=bwtoz, color=as.factor(smoke)), se=FALSE) + 
-  xlab("Gestation Period Length") + 
-  ylab("Birth Weight (oz)")+ 
-  ggtitle("Does Smoking Lead to Babies Being Born with Low Birth Weights?")
-```
-
-
-
-### Conclusion
-* The data shows that generally, the babies of mothers who smoke have lower birth weights than of those who do not for almost all gestational ages. This means that the data does support the Surgeon General's second assertion that newborns of mothers who smoke have smaller birth weights at every gestational age. 
-
-### Recommendation
-* Our recomendation is to inform mothers and soon-to-be mothers that if they make the decision to smoke during their pregnancy their baby is more likely to have a lower birth weight regardless of the gestation period that the mother and baby are in. It would be useful to collect more data and research why women who smoke tend to have babies with higher birth weights after the 300th day of gestation. Overall, mothers and expecting mothers should not smoke while they are pregnant in order to better their chances of having a healthy baby. There are potential confounding variables to these results such as the condition of the mother during the pregnancy and birth.
-
-# Preliminary Question: Which variables are similar between smokers and nonsmokers? Which are different?
-* Whether one smokes or not does not appear to have an effect on their marital status or the number of previous pregnancies (parity) they've had. There are similar numbers of both smokers and non smokers for the different values of these variables. When it comes to variables like being premature or birth weight, smoking does appear to affect their status. Our two graphs that answer the questions above show this. Babies of smokers tend to have lower birth weights and are premature more frequently. Another variable that smoking appears to affect is education level. For both males and females, there are more people with higher education levels among those who do not smoke than those who do not.
-```{r}
-ggplot(data = babies) + 
-  geom_jitter(mapping = aes(x=smoke, y=marital, color = as.factor(smoke)))
- ggplot(data = babies) + 
-  geom_jitter(mapping = aes(x=smoke, y=parity, color = as.factor(smoke)))
- ggplot(data = babies) + 
-  geom_jitter(mapping = aes(x=smoke, y=ded, color = as.factor(smoke)))
- ggplot(data = babies) + 
-  geom_jitter(mapping = aes(x=smoke, y=med, color = as.factor(smoke)))
-```
-
-
-# Individual Sub Questions 
-
-Madeline's Plot
-
-* Question: Does the education of the mother affect the  height of the mother?  
-```{r}
-ggplot(data = babies, mapping = aes(x= mht, fill = as.factor(med))) +
-  geom_histogram(bins=15) +
-  facet_grid(~med)+
-  ggtitle("Does the education of the mother affect the height of the mother?")+
-  xlab("Height of Mother")+
-  guides(fill=guide_legend(title="Mother's Education"))
-
-```
-
-
-Madeline's Findings: Most mothers had only graduated from high school and nothing else. I also saw that there was a slighlty higher amount of tall children in people who were high school graduates and some college and also in college graduate.
-
-
-Kevin's Plot
-
-* Question: Does the number of previous pregnancies had by someone affect their baby's birth weight?
-```{r}
-ggplot(data = babies) + 
-  geom_smooth(mapping = aes(x=parity, y=bwtoz), fill="green", size=2, level=0.85) + 
-  xlab("# of All Previous Pregnancies") + 
-  ylab("Birth Weight (oz)")
-```
-
-
-Kevin's Findings:
-
-* The babies of those who have had a higher number of previous pregnancies tend to have lower birth weights.
-
-
-Katie's Plot:
-
-* Question: Does the mother's pre-pregnancy weight affect whether her baby will be born prematurely?
-```{r}
-ggplot(data = babies)+
-  geom_point(mapping = aes(x = as.factor(Premature), y = mpregwt), color = "blue")+
-  xlab("Premature")+
-  ylab("Mother's Pre-Pregnancy Weight")
-```
-
-
-Katie's Findings:
-
-* A mother's pre-pregnancy weight does not seem to directly effect whether or not her baby will be born prematurely. However, by looking at the graph you can see that mother's who gave birth to premature babies were typically less than 150 pounds.
-
-
-Zandy's Plot:
-
-* Question: Does a dad's weight impact the weight of the weight of the newborn? 
-```{r}
-ggplot(data = babies) +
-  geom_jitter(mapping = aes(x = dwt, y = bwtoz), color = "green") +
-  geom_smooth(mapping = aes(x = dwt, y = bwtoz), color = "blue")
-```
-Zandy's Findings:
-
-* A  dad's weight does not seem to directly affect the birth weight of his baby with only a weak positive correlation of 0.14. The data also shows though, that most babies are born with the dad being about 150-200 lbs. and that those babies have overall higher birth weights mostly due to more data being concentrated in that weight range of 150-200 lbs.
 
 
 # Team Summary:
