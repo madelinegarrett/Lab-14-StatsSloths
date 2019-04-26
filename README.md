@@ -192,6 +192,7 @@ ggplot(data = mean_data) +
   geom_vline(xintercept = orig_diff, color = "blue") +
   ggtitle("Distribution of Mean Differences for Paritys")
  ```
+ * Conclusion: The original mean difference is rare compared to the sampled mean differences which means that labels do matter for this test. This means that a mother's parity does have an affect on whether a baby is born prematurely, telling us that while smoking may be a cause of premature births, it is not the only significant one.
 
 ## Is the mother's pre-pregency weight correlated with a babies premature birth?
 Zandy's Section
