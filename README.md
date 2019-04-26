@@ -197,7 +197,31 @@ ggplot(data = mean_data) +
 ## Is the mother's pre-pregency weight correlated with a babies premature birth?
 Zandy's Section
 * This question is interesting because this question can help determine if a higher pre-pregency weight leads to a higher percentage of premature births.
-*
+* I answered this question by creating a linear model and then plotting the predictions and by also creating a histogram that shows the count of premature babies born for a given mother's weight.
+
+```{r}
+Premature_babies_model <- lm(Premature ~ mpregwt, data = babies)
+
+Premature_babies_grid <- babies %>%
+  data_grid(mpregwt) %>%
+  add_predictions(Premature_babies_model, "Premature")
+
+ggplot(data = babies, aes(as.numeric(mpregwt), Premature)) + 
+  geom_point(data = Premature_babies_grid, mapping = aes(as.numeric(mpregwt), Premature), color = "green", size = 1) + 
+  scale_x_continuous(breaks = seq(80, 220, 30)) +
+  ggtitle("Predictions for Mother's Weight and Being Born Premature") +
+  xlab("Mother's Weight") +
+  ylab("Premature (0 = Normal, 1 = Born Premature)")
+
+ggplot(data = babies) + 
+  geom_histogram(stat = "count", mapping = aes(x = as.numeric(mpregwt), fill = as.factor(Premature))) +
+  ggtitle("Mothers Weight Vs. Being Born Premature") +
+  xlab("Mother's Weight") +
+  scale_fill_discrete(name = "Premature") +
+  scale_x_continuous(breaks = seq(80, 220, 30))
+```
+* Conclusion: The linear model shows a negative relationship that shows as the mother's weight goes up, overall, Premature babies born goes down. The histogram also confirms this result by showing that the count of Premature deaths goes down as the mother's weight goes up. This result is somewhat surprising because you would think that as a mother's weight goes up, the number of Premature babies born would go up. 
+
 # Team Summary:
 
 * I, Kevin Luth, ran a permutation test on the mean differences between the premature variable based on different parity rates. I plotted the differences in a histogram and compared those values to the original mean difference that I previously calculated to see if the original difference was rare to the sampled values, which would indicate that parity does effect prematurity in babies.
