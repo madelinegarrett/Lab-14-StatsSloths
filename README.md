@@ -190,7 +190,7 @@ ggplot(data = mean_data) +
   ggtitle("Distribution of Mean Differences for Paritys")
  ```
 
-# Is the mother's pre-pregency weight correlated with a babies premature birth?
+## Is the mother's pre-pregency weight correlated with a babies premature birth?
 Zandy's Section
 * This question is interesting because this question can help determine if a higher pre-pregency weight leads to a higher percentage of premature births.
 *
