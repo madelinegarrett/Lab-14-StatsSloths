@@ -118,7 +118,7 @@ ggplot(data = babies) +
 ### Recommendations
 *  Our recommendation is to tell mothers that if they smoke that there is a risk that there is a chance that their child will be born prematurely. We also think that more data must be gathered in order to more accurately answer this question. However when it comes to the life of their child, most mothers would rather noe take risks which is why we think it would be wise to advise them of the possible dangers of smoking while pregnant. We also recognize that there are confounding variables such as smoking in the past and mothers age.
 
-# Does Smoking Lead to Babies Being Born with Low Birth Weights?
+## Does Smoking Lead to Babies Being Born with Low Birth Weights?
 Madeline's Section 
 
 * This question is interesting becuase it can help to better inform mothers about the risk that smoking can have on their unborn children, specifically if smoking can lead to low birth weights which can be very troubling for new born babies. This is important because knowing this may help to advise mothers to help avoid giving birth to children with dangerously low birth weights that could affect their health. 
@@ -143,7 +143,7 @@ ggplot(babies, aes(as.factor(number), bwtoz)) +
 *Conclusion 
 I found that because there is a general decrease in the predictions as you move from 1 to 8 (non smokers to smokers) then there is a correlation between smoking and low birth weights. You can see the lowest mean being opt
 
-# Are premature births correlated with small birth weights?
+## Are premature births correlated with small birth weights?
 Katie's Section
 * This question is interesting because it can show us whether or not birth weights effect when a baby is born. This is important because it can help prove to expecting mothers that birth weights can have an effect on whether their baby will be born before the 270 gestational period is over.
 * To help me answer this question I used two plots. The simpler one is the histogram which just shows birth weights compared to wether the baby was born prematurely or not. The other is a box plot that I used the lm function on as well as add predictions to show the effects low birth weights have on gestational periods.
@@ -168,6 +168,27 @@ ggplot(data = babies)+
 
 ```
 * Conclusion: I found that as birth weights decrease there is a stronger correlation to premature births.
+
+## Does the number of babies previously had by the mother affect whether her next one is born premature?
+
+```{r}
+high_parity <- babies %>%
+  filter(parity == 11)
+mean(high_parity[["Premature"]]) #1
+
+low_parity <- babies %>%
+  filter(parity == 0)
+mean(low_parity[["Premature"]]) #0.2016807
+
+orig_diff <- 1 - 0.2016807 #0.7983193
+
+values <- perm_mean(1000, babies$Premature, 240)
+mean_data <- data_frame(values)
+ggplot(data = mean_data) +
+  geom_histogram(mapping = aes(x = values), binwidth = .02) +
+  geom_vline(xintercept = orig_diff, color = "blue") +
+  ggtitle("Distribution of Mean Differences for Paritys")
+ ```
 
 # Is the mother's pre-pregency weight correlated with a babies premature birth?
 Zandy's Section
