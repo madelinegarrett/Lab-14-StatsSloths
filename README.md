@@ -92,6 +92,26 @@ ggplot(data = mean_data) +
   ggtitle("Distribution of Mean Differences For Moms that Smoked vs Non Smokers")
 ```
 
+```{r}
+babies_model <- lm(Premature ~ smoke, data = babies)
+
+babies_grid <- babies %>%
+  data_grid(smoke) %>%
+  add_predictions(babies_model, "Premature")
+
+ggplot(data = babies, aes(as.factor(smoke), Premature)) + 
+  geom_point(data = babies_grid, mapping = aes(as.factor(smoke), Premature), color = "blue", size = 4)+ 
+  ggtitle("Predictions for Smoking and Being Born Premature") +
+  xlab("Smoker (0 = Non-Smoker, 1 = Smoker)") +
+  ylab("Premature (0 = Normal, 1 = Born Premature)")
+
+ggplot(data = babies) + 
+  geom_histogram(stat = "count", mapping = aes(x = as.factor(smoke), fill = as.factor(Premature))) +
+  ggtitle("Smoking and Being Born Premature") +
+  xlab("Smoker (0 = Non-Smoker, 1 = Smoker)") +
+  scale_fill_discrete(name = "Premature")
+ ```
+
 ### Conclusion
 * This data shows that there are more babies being born prematurely when the mother smoked at least one cigarette a day. However when we ran the table of how many women smoked and babies being born prematurely we saw that only 4 more babies were born prematurely to women who smoked. This leads us to conclude that there is a minor correlation between smoking and babies being born prematurely 
 
