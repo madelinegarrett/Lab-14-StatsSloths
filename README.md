@@ -123,6 +123,28 @@ ggplot(babies, aes(as.factor(number), bwtoz)) +
 *Conclusion 
 I fouund that because there is a general decrease in the predictions as you move from 1 to 8 (non smokers to smokers) then there is a correlation between smoking and low birth weights. You can see the lowest mean being opt
 
+# Are premature births correlated with small birth weights?
+Katie's Section
+```{r}
+babies2 <- filter(babies, Premature == 1)
+babymodel <- lm(bwtoz ~ Premature, data = babies)
+plotdata <- babies %>%
+  data_grid(Premature) %>%
+  add_predictions(babymodel, "bwtoz")
+ggplot(babies, aes(as.factor(Premature), bwtoz)) + 
+  geom_boxplot() +
+  geom_point(data = plotdata, colour = "blue", size = 4)+ 
+  ggtitle("Birth Weight and Premature Birth")+
+  xlab("Was the baby born prematurely? (0 = no    1 = yes)") +
+  ylab("Birth Weight in Ounces")
+
+ggplot(data = babies)+
+  geom_histogram(mapping = aes(x=Premature, fill = bwtoz),fill = "gold", bins = 3)+
+  ggtitle("Birth Weight and Smoking")+
+  xlab("Was the baby born prematurely? (0 = no    1 = yes)")+
+  ylab("Birth Weight in Ounces")
+
+```
 
 # Team Summary:
 
