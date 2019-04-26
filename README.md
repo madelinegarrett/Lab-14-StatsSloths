@@ -200,6 +200,9 @@ Zandy's Section
 * I answered this question by creating a linear model and then plotting the predictions and by also creating a histogram that shows the count of premature babies born for a given mother's weight.
 
 ```{r}
+Premature_babies_vs_mothers_weight <- babies %>%
+  select(10, 21)
+  
 Premature_babies_model <- lm(Premature ~ mpregwt, data = babies)
 
 Premature_babies_grid <- babies %>%
@@ -228,6 +231,6 @@ ggplot(data = babies) +
 
 * I, Katie Stewart, created a plot that shows the relationship between a mother's pre-pregnancy weight and whether her baby was born prematurely. The data showed that mothers who gave birth to premature babies typically had pre-pregnancy weights below 150 pounds. I used the geom_point function and changed the color of the plotted points. I also changed the labels on the x and y axis to make it easier to understand. 
 
-* I, Zandy Boone, created a plot showing the relationship between a dad's weight in pounds and his baby's birth weight in ounces. The data showed that there was a very weak correlation between the weigh of the dad and the weight of the baby with a correlation of 0.14. The data also shows though, that most babies are born with the dad being about 150-200 lbs. and that those babies have overall higher birth weights mostly due to more data being concentrated in that weight range of 150-200 lbs. I used a geom_ jitter function and a geom_smooth function with the dad's weight in pounds,  on the x-axis and the birth weights of the babies in ounces, on the y-axis for both graphs. I changed the colors of the line and the color of the points to make the line and points stand out more and to give the graph a more professional look.
+* I, Zandy Boone, created a linear model to show the relationship between a mother's weight and a baby being born prematurely. The model showed that as a mother's weight went up, premature births actually went down. I also created a histogram with the same results which show that as the mother's weight went up, premature births went down. I first did this by filtering the data to only show the mother's weight and Premature rows. I then created the linear model and graphed the predictions of the model and also changing the x-axis to show fewer weights to make the graph easier to read. I then created a histogram showing the count of premature births for a given mother's weight also changing the x-axis to make the graph easier to read.
 
 *  I, Madeline Garrett, worked with Zandy to create a plot that answered the question of whether smoking affected premature birth. We created a bar plot using the geom_bar. I also made a graph of  mothers education versus mothers height. Most mothers had only graduated from high school and nothing else. I also saw that there was a slighlty higher amount of tall children in people who were high school graduates and some college and also in college graduate. I  think  this is interesting because it has been seen in other studies that more CEOs tend to be taller in height. I  thought that this related to this study well.
