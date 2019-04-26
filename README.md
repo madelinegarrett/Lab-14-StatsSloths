@@ -168,6 +168,11 @@ ggplot(data = babies)+
 
 ```
 * Conclusion: I found that as birth weights decrease there is a stronger correlation to premature births.
+
+# Is the mother's pre-pregency weight correlated with a babies premature birth?
+Zandy's Section
+* This question is interesting because this question can help determine if a higher pre-pregency weight leads to a higher percentage of premature births.
+*
 # Team Summary:
 
 * I, Kevin Luth, created a plot showing the relationship between the number of previous pregnancies (parity) and birth weights. The data showed that child birth weights start to decrease as you get into higher numbers of previous pregnancies. I used the geom_smooth function and changed the color and width of the standard error interval to make it stand out on the gray background and to not have it overshadow the actual line. In addition, I changed the thickness of the line to make it more prominent on the page and in the error interval. I changed the x and y labels as well to more clearly display what they represent.
