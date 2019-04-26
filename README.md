@@ -98,6 +98,30 @@ ggplot(data = mean_data) +
 ### Recommendations
 *  Our recommendation is to tell mothers that if they smoke that there is a risk that there is a chance that their child will be born prematurely. We also think that more data must be gathered in order to more accurately answer this question. However when it comes to the life of their child, most mothers would rather noe take risks which is why we think it would be wise to advise them of the possible dangers of smoking while pregnant. We also recognize that there are confounding variables such as smoking in the past and mothers age.
 
+# Does Smoking Lead to Babies Being Born with Low Birth Weights?
+Madeline's Section 
+
+* This question is interesting becuase it can help to better inform mothers about the risk that smoking can have on their unborn children, specifically if smoking can lead to low birth weights which can be very troubling for new born babies. This is important because knowing this may help to advise mothers to help avoid giving birth to children with dangerously low birth weights that could affect their health. 
+
+* To answer this question I used the new tool that helped to add predictions to the daa with add_predictions and the mod function to help add these predictions. This way I have a histogram that shows the predictions as well as the regular mean of smokers. 
+
+```{r}
+mod <- lm(bwtoz ~ number, data = babies)
+
+grid <- babies %>% 
+  data_grid(number) %>% 
+  add_predictions(mod, "bwtoz")
+
+ggplot(babies, aes(as.factor(number), bwtoz)) + 
+  geom_boxplot() +
+  geom_point(data = grid, colour = "red", size = 4)+ 
+  ggtitle("Birth Weight and Amount of Cigarettes Smoked")+
+  xlab("Number of Cigs Smoked (1 = non-smokers --> 7 = 40-60 cigarettes a day")
+```
+
+
+*Conclusion 
+I fouund that because there is a general decrease in the predictions as you move from 1 to 8 (non smokers to smokers) then there is a correlation between smoking and low birth weights. You can see the lowest mean being opt
 
 
 # Team Summary:
