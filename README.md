@@ -200,7 +200,7 @@ Zandy's Section
 *
 # Team Summary:
 
-* I, Kevin Luth, created a plot showing the relationship between the number of previous pregnancies (parity) and birth weights. The data showed that child birth weights start to decrease as you get into higher numbers of previous pregnancies. I used the geom_smooth function and changed the color and width of the standard error interval to make it stand out on the gray background and to not have it overshadow the actual line. In addition, I changed the thickness of the line to make it more prominent on the page and in the error interval. I changed the x and y labels as well to more clearly display what they represent.
+* I, Kevin Luth, ran a permutation test on the mean differences between the premature variable based on different parity rates. I plotted the differences in a histogram and compared those values to the original mean difference that I previously calculated to see if the original difference was rare to the sampled values, which would indicate that parity does effect prematurity in babies.
 
 * I, Katie Stewart, created a plot that shows the relationship between a mother's pre-pregnancy weight and whether her baby was born prematurely. The data showed that mothers who gave birth to premature babies typically had pre-pregnancy weights below 150 pounds. I used the geom_point function and changed the color of the plotted points. I also changed the labels on the x and y axis to make it easier to understand. 
 
