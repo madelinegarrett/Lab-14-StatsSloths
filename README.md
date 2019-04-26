@@ -170,8 +170,9 @@ ggplot(data = babies)+
 * Conclusion: I found that as birth weights decrease there is a stronger correlation to premature births.
 
 ## Does the number of babies previously had by the mother affect whether her next one is born premature?
-* Kevin's Section
+Kevin's Section
 * This question is important to out overall question because it gives a possible alternate explanation for a cause of premature births. If parity does affect the chances of a premature birth, then we will know that smoking does not solely cause premature births.
+* I answered this by running a permuatation test on the mean differences between the premature variable based on different parity rates. I plotted the differences in a histogram and compared those values to the original mean difference that I previously calculated.
 
 ```{r}
 high_parity <- babies %>%
